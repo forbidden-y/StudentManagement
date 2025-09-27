@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.example.mapper.StudentMapper">
+
+    <!--
+        字段名和属性名不一致的情况，如何处理映射关系：
+        1、为查询的字段设置别名，和属性名保持一致
+        2、当字段符合MySOL的要求使用，而属性符合java的要求使用驼峰
+            此时可以在MyBatis的核心配置文件中设置一个全局配置，可以自动将下划线映射为驼峰
+            emp_id:empId, emp_name : empName
+            <setting name="mapUnderscoreToCamelCase" value="true"/>
+        3、使用resultMap设置自定义映射关系
+            处理多对一得映射关系：
+            1、级联方式处理
+            2、association
+            3、分步查询
+    -->
+
+    <!--
+        resultMap:设置自定义的映射关系
+            id:唯一标识
+            type:处理映射关系的实体类的类型
+        常用的标签:
+            id:处理主键和实体类中属性的映射关系
+            result: 处理普通字段和实体类中属性的映射关系
+            column: 设置映射关系中的字段名，必须是sqL查询出的某个字段
+            property: 设通映射关系中的属性的属性名，必须是处理的实体类类型中的属性名
+            association:
+    -->
+
+<!-- 映射结果集 -->
+        <resultMap id="StudentResultMap" type="com.example.entity.Student">
+            <id property="studentId" column="studentId"/>
+            <result property="teacherName" column="teacherName"/>
+            <result property="birthday" column="birthday"/>
+            <result property="classId" column="classId"/>
+            <result property="gender" column="gender"/>
+        </resultMap>
+
+<!-- 查询所有学生 -->
+        <select id="getAll" resultMap="StudentResultMap">
+            SELECT * FROM students
+        </select>
+
+<!-- 查询单个学生-->
+        <select id="getById" parameterType="String" resultType="com.example.entity.Student">
+            SELECT * FROM students WHERE studentId = #{studentId}
+        </select>
+
+<!-- 添加学生 -->
+        <insert id="add" parameterType="com.example.entity.Student">
+            INSERT INTO students (studentId, teacherName, birthday, classId, gender) VALUES (#{studentId}, #{teacherName}, #{birthday} #{classId}, #{gender})
+        </insert>
+
+<!-- 更新学生 -->
+        <update id="update" parameterType="com.example.entity.Student">
+            UPDATE students SET studentId = #{studentId}, teacherName = #{teacherName}, birthday = #{birthday}, classId = #{classId}, gender = #{gender} WHERE id = #{id}
+        </update>
+
+<!-- 删除学生 -->
+        <delete id="delete" parameterType="String">
+            DELETE FROM students WHERE studentId = #{studentId}
+        </delete>
+
+    </mapper>

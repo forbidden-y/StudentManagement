@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.example.mapper.CourseMapper">
+<!-- 映射结果集 -->
+        <resultMap id="CourseResultMap" type="com.example.entity.Course">
+            <id property="courseId" column="courseId"/>
+            <result property="courseName" column="courseName"/>
+            <result property="teacherName" column="teacherName"/>
+            <result property="credits" column="credits"/>
+        </resultMap>
+
+<!-- 查询所有课程 -->
+        <select id="getAll" resultMap="CourseResultMap">
+            SELECT * FROM courses
+        </select>
+
+<!-- 查询单个课程-->
+        <select id="getById" parameterType="String" resultMap="CourseResultMap">
+            SELECT * FROM courses WHERE courseId = #{courseId}
+        </select>
+
+<!-- 添加课程 -->
+        <insert id="add" parameterType="com.example.entity.Course">
+            INSERT INTO courses (courseId, courseName, teacherName, credits) VALUES (#{courseId}, #{courseName}, #{teacherName}, #{credits})
+        </insert>
+
+<!-- 更新课程 -->
+        <update id="update" parameterType="com.example.entity.Course">
+            UPDATE courses SET courseId = #{courseId}, courseName = #{courseName}, teacherName = #{teacherName}, credits = #{credits} WHERE id = #{id}
+        </update>
+
+<!-- 删除课程 -->
+        <delete id="delete" parameterType="String">
+            DELETE FROM courses WHERE courseId = #{courseId}
+        </delete>
+
+    </mapper>

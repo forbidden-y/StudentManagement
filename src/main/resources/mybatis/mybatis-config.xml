@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--
+        Mybatis核心配置文件中的标签必须按照指定的顺序配置
+        (properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,objectWrapperFactory?,reflectorFactory?,plugins?,environments?,databaseIdProvider?,mappers?)
+    -->
+
+    <properties resource="jdbc.properties"/>
+
+    <settings>
+        <!--将下划线映射为驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--开启延迟加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--
+            按需加载 默认值为false
+            aggressiveLazyLoading: 当开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载
+            此时就可以实现按需加载，获取的数据是什么，就只会执行相应的sl。
+        -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.example.entity.Student"/>
+        <typeAlias type="com.example.entity.Course"/>
+        <package name="com.example.entity"/>
+    </typeAliases>
+
+    <environments default="development">
+      <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/student_management"/>
+            <property name="username" value="root"/>
+            <property name="password" value="123456"/>
+        </dataSource>
+      </environment>
+    </environments>
+
+  <mappers>
+    <mapper resource="com/example/mapper/StudentMapper.xml"/>
+    <mapper resource="com/example/mapper/CourseMapper.xml"/>
+  </mappers>
+</configuration>
+
+
